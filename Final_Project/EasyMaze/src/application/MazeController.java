@@ -29,6 +29,7 @@ public class MazeController {
     private Timeline timer;
     
     private boolean scoreSaved = false;
+   
 
     public MazeController(MazeGenerator generator, MazeView view) {
         this.generator = generator;
@@ -104,6 +105,11 @@ public class MazeController {
     public void startNewGame() {   	
     	scoreSaved = false;
         // Generate a new maze
+    	
+    	if (timer != null) {
+            timer.stop();
+        }
+    	
         generator.generateMaze();
         maze = generator.getMaze();
         
