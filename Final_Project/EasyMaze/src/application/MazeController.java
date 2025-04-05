@@ -1,10 +1,20 @@
 package application;
 
-import javafx.scene.input.KeyCode;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-//在文件顶部添加这个导入
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 
 public class MazeController {
@@ -15,6 +25,10 @@ public class MazeController {
     private boolean[][] maze;
     
     private boolean gameActive = false;
+    private long startTime;	
+    private Timeline timer;
+    
+    private boolean scoreSaved = false;
 
     public MazeController(MazeGenerator generator, MazeView view) {
         this.generator = generator;
@@ -63,7 +77,10 @@ public class MazeController {
             // Check if the player has reached the end point
             if (playerX == generator.getEndX() && playerY == generator.getEndY()) {
                 gameActive = false;
-                showWinMessage();
+                stopTimer();
+                long elapsedTime = System.currentTimeMillis() - startTime;
+//                showWinMessage();
+                showResultScreen(elapsedTime);
             }
         }
         
@@ -83,16 +100,9 @@ public class MazeController {
         return !maze[y][x];
     }
 
-    private void showWinMessage() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Congratulations");
-        alert.setHeaderText("You win！");
-        alert.setContentText("You successfully reached the end！");
-        alert.showAndWait();
-    }
-
     // Add game state activation in startNewGame method
-    public void startNewGame() {
+    public void startNewGame() {   	
+    	scoreSaved = false;
         // Generate a new maze
         generator.generateMaze();
         maze = generator.getMaze();
@@ -107,6 +117,84 @@ public class MazeController {
         // Activate game state
         gameActive = true;
         
+        startTime = System.currentTimeMillis();
+        view.updateTimer("Time: 0 sec"); 
+        startTimer();
+        
         System.out.println("A new game has begun! Starting point: " + playerX + "," + playerY + ", End point: " + generator.getEndX() + "," + generator.getEndY());
     }
+    
+ // Start a Timeline timer to update the MazeView's timer label every second
+    private void startTimer() {
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            long elapsed = System.currentTimeMillis() - startTime;
+            int seconds = (int) (elapsed / 1000.0);
+            view.updateTimer("Time: " + seconds + " sec");
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
+    }
+    
+    // Stop the timer
+    private void stopTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+    }
+    
+    private void showResultScreen(long elapsedTime) {
+        // Display the actual score (including decimals) in the result interface
+        double secondsWithFraction = elapsedTime / 1000.0;
+
+        Stage resultStage = new Stage();
+        resultStage.initModality(Modality.APPLICATION_MODAL);
+        resultStage.setTitle("Results");
+
+        Label timeLabel = new Label("Your Time: " + secondsWithFraction + " sec");
+        timeLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        Label rankingLabel = new Label("Current Ranking:");
+        TextArea rankingArea = new TextArea(ScoreDatabase.getRanking());
+        rankingArea.setEditable(false);
+        rankingArea.setPrefHeight(150);
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Enter your name (optional)");
+
+        Button saveButton = new Button("Save");
+        Button skipButton = new Button("Skip");
+
+        // Avoid duplicate saving by judging whether the results have been saved
+        saveButton.setOnAction((ActionEvent e) -> {
+            if (!scoreSaved) {
+                String playerName = nameField.getText().trim();
+                if (!playerName.isEmpty()) {
+                    ScoreDatabase.saveScore(playerName, secondsWithFraction);
+                    rankingArea.setText(ScoreDatabase.getRanking());
+                    scoreSaved = true;
+                    // After saving, modify the button text and hide Skip
+                    saveButton.setText("Close");
+                    skipButton.setVisible(false);
+                }
+            } else {
+                resultStage.close();  // If saved, close the result interface
+            }
+        });
+
+        skipButton.setOnAction((ActionEvent e) -> {
+            resultStage.close();
+        });
+
+        HBox buttonBox = new HBox(10, saveButton, skipButton);
+        buttonBox.setAlignment(javafx.geometry.Pos.CENTER);
+
+        VBox vbox = new VBox(10, timeLabel, rankingLabel, rankingArea, nameField, buttonBox);
+        vbox.setPadding(new javafx.geometry.Insets(15));
+        vbox.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 350, 350);
+        resultStage.setScene(scene);
+        resultStage.showAndWait();
+    }
+
 }

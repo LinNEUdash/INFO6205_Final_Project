@@ -22,7 +22,7 @@ public class MazeApplication extends Application {
         MazeController controller = new MazeController(generator, mazeView);
         
         // Set a new scene
-        Scene scene = new Scene(mazeView, MAZE_WIDTH * CELL_SIZE, MAZE_HEIGHT * CELL_SIZE + 50);
+        Scene scene = new Scene(mazeView, MAZE_WIDTH * CELL_SIZE, MAZE_HEIGHT * CELL_SIZE + 150);
         
         // Add keyboard event listener
         scene.setOnKeyPressed(event -> controller.handleKeyPress(event));
@@ -34,7 +34,7 @@ public class MazeApplication extends Application {
         primaryStage.show();
         
         // Start a new game
-        controller.startNewGame();
+//        controller.startNewGame();
         
         // Request focus to ensure keyboard events can be captured
         mazeView.requestFocus();
