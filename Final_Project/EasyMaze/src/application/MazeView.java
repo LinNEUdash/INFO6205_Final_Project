@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.HBox;  
 
 public class MazeView extends VBox {
     private int width;
@@ -17,6 +18,7 @@ public class MazeView extends VBox {
     private Rectangle playerRect;
     private Button startButton;
     private Label timerLabel;
+    private Button hintButton;  
     
     public MazeView(int width, int height, int cellSize) {
         this.width = width;
@@ -41,8 +43,15 @@ public class MazeView extends VBox {
         startButton = new Button("New Game");
         startButton.setPrefWidth(100);
         
+        //hint button
+        hintButton = new Button("Get Hint");  
+        hintButton.setPrefWidth(100);
+        hintButton.setVisible(false);
+        
+        HBox buttonBox = new HBox(420, startButton, hintButton);  
+        
         // Add all components in sequence
-        getChildren().addAll(timerLabel, mazeGrid, startButton);
+        getChildren().addAll(timerLabel, mazeGrid, buttonBox); 
     }
     
     public void updateTimer(String timeText) {
@@ -89,5 +98,19 @@ public class MazeView extends VBox {
     public Button getStartButton() {
         return startButton;
     }
+    
+    public Button getHintButton() {  
+        return hintButton;  
+    }  
+    
+   
+    public void showHintButton() {  
+        hintButton.setVisible(true);  
+    }  
+
+    
+    public void hideHintButton() {  
+        hintButton.setVisible(false);  
+    }  
 }
 

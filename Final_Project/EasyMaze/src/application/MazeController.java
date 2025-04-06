@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.Alert;
 
 
 
@@ -39,6 +40,21 @@ public class MazeController {
             startNewGame();
             view.requestFocus();
         });
+        
+        view.getHintButton().setOnAction(e -> {  
+            if (gameActive) {  
+                // 创建 HintGenerator 实例并生成提示  
+                HintGenerator hintGenerator = new HintGenerator(  
+                    maze,  // 当前迷宫  
+                    playerX,  // 玩家当前X坐标  
+                    playerY,  // 玩家当前Y坐标  
+                    generator.getEndX(),  // 终点X坐标  
+                    generator.getEndY(),  // 终点Y坐标  
+                    view  // MazeView 实例  
+                );  
+                hintGenerator.generateHint();  
+            }  
+        });  
     }
 
     public void handleKeyPress(KeyEvent event) {
@@ -127,6 +143,8 @@ public class MazeController {
         view.updateTimer("Time: 0 sec"); 
         startTimer();
         
+        view.showHintButton();
+        
         System.out.println("A new game has begun! Starting point: " + playerX + "," + playerY + ", End point: " + generator.getEndX() + "," + generator.getEndY());
     }
     
@@ -201,6 +219,8 @@ public class MazeController {
         Scene scene = new Scene(vbox, 350, 350);
         resultStage.setScene(scene);
         resultStage.showAndWait();
+        
+        view.hideHintButton(); 
     }
 
 }
