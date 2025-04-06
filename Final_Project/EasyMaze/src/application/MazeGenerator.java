@@ -1,9 +1,6 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.Random;
 
 public class MazeGenerator {
     private int width;
@@ -39,7 +36,7 @@ public class MazeGenerator {
         }
         
         // Generate a maze using depth-first search
-        Stack<int[]> stack = new Stack<>();
+        StackInterface<int[]> stack = new VectorStack<>();
         maze[startY][startX] = false; // Start point
         stack.push(new int[]{startX, startY});
         
@@ -48,9 +45,9 @@ public class MazeGenerator {
             int x = current[0];
             int y = current[1];
             
-            List<int[]> neighbors = getUnvisitedNeighbors(x, y);
+            ListInterface<int[]> neighbors = getUnvisitedNeighbors(x, y);
             
-            if (neighbors.isEmpty()) {
+            if (neighbors.size() == 0) {
                 stack.pop();
             } else {
                 int[] next = neighbors.get(0);
@@ -71,8 +68,8 @@ public class MazeGenerator {
         maze[endY][endX] = false;
     }
 
-    private List<int[]> getUnvisitedNeighbors(int x, int y) {
-        List<int[]> neighbors = new ArrayList<>();
+    private ListInterface<int[]> getUnvisitedNeighbors(int x, int y) {
+    	ListInterface<int[]> neighbors = new ArrayListMaze<>();
         
         // Check neighbors in four directions (up, right, bottom, left)
         int[][] directions = {{0, -2}, {2, 0}, {0, 2}, {-2, 0}};
@@ -88,8 +85,21 @@ public class MazeGenerator {
         }
         
         // Randomly shuffle the neighbor list to make the maze more random
-        Collections.shuffle(neighbors);
+        shuffle(neighbors);
         return neighbors;
+    }
+    
+    /**
+     * Shuffle a custom list of int[] in-place using Fisher-Yates algorithm.
+     */
+    private void shuffle(ListInterface<int[]> list) {
+    	Random random = new Random();
+    	for (int i = list.size() - 1; i > 0; i--) {
+    		int j = random.nextInt(i + 1);
+    		int[] temp = list.get(i);
+    		list.set(i, list.get(j));
+    		list.set(j, temp);
+    	}
     }
     
     public boolean[][] getMaze() {
