@@ -10,19 +10,19 @@ public class HintGenerator {
         private boolean[][] visited;  
         private int endX, endY;  
         
-        // 方向定义  
+        // Direction definitions  
         private static final int[][] DIRECTIONS = {  
-            {-1, 0},  // 左  
-            {1, 0},   // 右  
-            {0, -1},  // 上  
-            {0, 1}    // 下  
+            {-1, 0},  // Left  
+            {1, 0},   // Right  
+            {0, -1},  // Up  
+            {0, 1}    // Down  
         };  
         
         private static final String[] DIR_NAMES = {  
             "Left", "Right", "Up", "Down"  
         };  
 
-        // 设置最大递归深度，防止栈溢出  
+        // Set maximum recursion depth to prevent stack overflow  
         private static final int MAX_DEPTH = 100;  
 
         public List<String> findPath(boolean[][] maze, int startX, int startY, int endX, int endY) {  
@@ -32,7 +32,7 @@ public class HintGenerator {
             this.path = new ArrayList<>();  
             this.visited = new boolean[maze.length][maze[0].length];  
             
-            // 打印迷宫布局  
+            // Print maze layout  
             System.out.println("Maze Layout:");  
             for (boolean[] row : maze) {  
                 StringBuilder rowStr = new StringBuilder();  
@@ -42,7 +42,7 @@ public class HintGenerator {
                 System.out.println(rowStr);  
             }  
             
-            // 使用广度优先搜索（BFS）替代深度优先搜索  
+            // Use Breadth-First Search (BFS) instead of Depth-First Search  
             List<String> result = breadthFirstSearch(startX, startY);  
             
             return result != null ? result : Collections.emptyList();  
@@ -59,17 +59,17 @@ public class HintGenerator {
             while (!queue.isEmpty()) {  
                 SearchNode current = queue.poll();  
 
-                // 找到终点  
+                // Find the endpoint  
                 if (current.x == endX && current.y == endY) {  
                     return reconstructPath(current);  
                 }  
 
-                // 尝试四个方向  
+                // Try four directions  
                 for (int i = 0; i < DIRECTIONS.length; i++) {  
                     int newX = current.x + DIRECTIONS[i][0];  
                     int newY = current.y + DIRECTIONS[i][1];  
 
-                    // 检查移动是否有效  
+                    // Check if the move is valid  
                     if (isValidMove(newX, newY) && !visited.containsKey(key(newX, newY))) {  
                         SearchNode next = new SearchNode(newX, newY, current, DIR_NAMES[i]);  
                         queue.offer(next);  
@@ -78,7 +78,7 @@ public class HintGenerator {
                 }  
             }  
 
-            return null; // 没有找到路径  
+            return null; // No path found  
         }  
 
         private String key(int x, int y) {  
@@ -100,7 +100,7 @@ public class HintGenerator {
                    !maze[y][x];  
         }  
 
-        // 辅助内部类，用于BFS搜索  
+        // Auxiliary inner class for BFS search  
         private static class SearchNode {  
             int x, y;  
             SearchNode parent;  
@@ -115,7 +115,7 @@ public class HintGenerator {
         }  
     }  
 
-    // HintGenerator 的主要属性  
+    // Main attributes of HintGenerator  
     private boolean[][] maze;  
     private int playerX;  
     private int playerY;  
@@ -123,7 +123,7 @@ public class HintGenerator {
     private int endY;  
     private MazeView view;  
 
-    // 构造方法  
+    // Constructor  
     public HintGenerator(boolean[][] maze, int playerX, int playerY, int endX, int endY, MazeView view) {  
         this.maze = maze;  
         this.playerX = playerX;  
@@ -133,14 +133,14 @@ public class HintGenerator {
         this.view = view;  
     }  
 
-    // 生成提示的主方法  
+    // Main method to generate hint  
     public void generateHint() {  
-        // 调试输出  
+        // Debug output  
         System.out.println("Generating Hint:");  
         System.out.println("Player Position: (" + playerX + ", " + playerY + ")");  
         System.out.println("End Position: (" + endX + ", " + endY + ")");  
         
-        // 使用内部递归路径查找  
+        // Use internal recursive path finding  
         RecursivePathFinder pathFinder = new RecursivePathFinder();  
         List<String> recommendedMoves = pathFinder.findPath(  
             maze,   
@@ -150,19 +150,19 @@ public class HintGenerator {
             endY  
         );  
 
-        // 添加推荐路径的调试信息  
+        // Add recommended path debug information  
         System.out.println("Recommended Moves: " + recommendedMoves);  
 
         showHintDialog(recommendedMoves);  
     }  
 
-    // 显示提示对话框  
+    // Show hint dialog  
     private void showHintDialog(List<String> moves) {  
         Alert alert = new Alert(Alert.AlertType.INFORMATION);  
         alert.setTitle("Maze Hint");  
         alert.setHeaderText("Recommended Path");  
 
-        // 将可移动方向转换为字符串  
+        // Convert movable directions to string  
         String moveText = moves.isEmpty()   
             ? "No recommended moves!"   
             : "Next moves: " + moves.get(0) +   
