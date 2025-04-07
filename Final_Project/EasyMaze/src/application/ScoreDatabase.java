@@ -1,26 +1,48 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+//import java.util.Collections;
+//import java.util.Comparator;
 
 public class ScoreDatabase {
-    private static List<ScoreRecord> records = new ArrayList<>();
+//    private static ListInterface<ScoreRecord> records = new ArrayListMaze<>();
     
-    public static void saveScore(String name, double timeSeconds) {
-        records.add(new ScoreRecord(name, timeSeconds));
-        Collections.sort(records, Comparator.comparingDouble(ScoreRecord::getTimeSeconds));
-        System.out.println("Score saved: " + name + " - " + timeSeconds + " sec");
-    }
+	private static PriorityQueueScore<ScoreRecord> records = new PriorityQueueScore<>(new ScoreComparator());
+	
+//    public static void saveScore(String name, double timeSeconds) {
+//        records.add(new ScoreRecord(name, timeSeconds));
+//        Collections.sort(records, Comparator.comparingDouble(ScoreRecord::getTimeSeconds));
+//        System.out.println("Score saved: " + name + " - " + timeSeconds + " sec");
+//    }
+	
+	public static void saveScore(String name, double timeSeconds) {
+		records.insert(new ScoreRecord(name, timeSeconds));
+		System.out.println("Score saved: " + name + " - " + timeSeconds + " sec");
+	}
     
     public static String getRanking() {
-        StringBuilder sb = new StringBuilder();
+        PriorityQueueScore<ScoreRecord> temp = new PriorityQueueScore<>(new ScoreComparator());
+//        ScoreRecord[] copy = records.toArray();
+//        for (ScoreRecord rec : copy) {
+//        	temp.insert(rec);
+//        }
+        Object[] copy = records.toArray();
+        for (Object o : copy) {
+        	ScoreRecord rec = (ScoreRecord) o;
+        	temp.insert(rec);
+        }
+    	
+    	StringBuilder sb = new StringBuilder();
         int rank = 1;
-        for (ScoreRecord record : records) {
-            sb.append(rank).append(". ").append(record.getName())
-              .append(" - ").append(record.getTimeSeconds()).append(" sec\n");
-            rank++;
+//        for (ScoreRecord record : records) {
+//            sb.append(rank).append(". ").append(record.getName())
+//              .append(" - ").append(record.getTimeSeconds()).append(" sec\n");
+//            rank++;
+//        }
+        
+        while (!temp.isEmpty()) {
+        	ScoreRecord record = temp.removeMin();
+        	sb.append(rank).append(". ").append(record.getName()).append(" - ").append(record.getTimeSeconds()).append(" sec\n");
+        	rank++;
         }
         return sb.toString();
     }
