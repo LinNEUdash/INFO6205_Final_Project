@@ -49,11 +49,11 @@ public class MazeView extends VBox {
         hintButton.setPrefWidth(120);
         hintButton.setVisible(false);
         
-        HBox buttonBox = new HBox(40); // 设置按钮间距  
-        buttonBox.setAlignment(Pos.CENTER_RIGHT); // 靠右对齐  
-        buttonBox.setPadding(new Insets(0, 70, 0, 0)); // 右侧内边距  
-        HBox.setHgrow(hintButton, Priority.ALWAYS); // 使hint按钮尽可能向右扩展  
-        buttonBox.getChildren().addAll(startButton, hintButton); // 添加按钮             
+        HBox buttonBox = new HBox(40); // Set button spacing  
+        buttonBox.setAlignment(Pos.CENTER_RIGHT); // Align to the right  
+        buttonBox.setPadding(new Insets(0, 70, 0, 0)); // Right-side padding  
+        HBox.setHgrow(hintButton, Priority.ALWAYS); // Expand hint button to the right as much as possible  
+        buttonBox.getChildren().addAll(startButton, hintButton); // Add buttons               
         
         // Add all components in sequence
         getChildren().addAll(timerLabel, mazeGrid, buttonBox); 

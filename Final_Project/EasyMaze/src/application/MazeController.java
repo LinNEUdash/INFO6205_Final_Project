@@ -43,14 +43,14 @@ public class MazeController {
         
         view.getHintButton().setOnAction(e -> {  
             if (gameActive) {  
-                // 创建 HintGenerator 实例并生成提示  
+                // Create HintGenerator instance and generate hint  
                 HintGenerator hintGenerator = new HintGenerator(  
-                    maze,  // 当前迷宫  
-                    playerX,  // 玩家当前X坐标  
-                    playerY,  // 玩家当前Y坐标  
-                    generator.getEndX(),  // 终点X坐标  
-                    generator.getEndY(),  // 终点Y坐标  
-                    view  // MazeView 实例  
+                    maze,  // Current maze  
+                    playerX,  // Player's current X coordinate  
+                    playerY,  // Player's current Y coordinate  
+                    generator.getEndX(),  // End point X coordinate  
+                    generator.getEndY(),  // End point Y coordinate  
+                    view  // MazeView instance  
                 );  
                 hintGenerator.generateHint();  
             }  
