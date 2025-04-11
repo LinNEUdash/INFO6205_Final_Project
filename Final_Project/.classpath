@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="EasyMaze/src"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.base"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.controls"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.fxml"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.graphics"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.media"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.swing"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/javafx.web"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/jdk.jsobject"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/jfx.incubator.input"/>
+	<classpathentry kind="src" path="javafx-sdk-24/src/jfx.incubator.richtext"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.media.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx.web.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/jdk.jsobject.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/jfx.incubator.input.jar"/>
+	<classpathentry kind="lib" path="javafx-sdk-24/lib/jfx.incubator.richtext.jar"/>
+	<classpathentry kind="output" path="EasyMaze/bin"/>
+</classpath>
